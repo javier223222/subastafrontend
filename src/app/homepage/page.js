@@ -24,14 +24,21 @@ const Homepage = () => {
         })
 
         nuevosMensajes()
+        getSubasta()
     },[])
 
     const getSubasta = () => {
-        axios.get(`http://localhost:3002/api/subasta`).then(res=>{
-            console.log(res.data);
-            setSubasta(res.data)
-        
-        })
+        setInterval(async()=>{
+           let response=await fetch(`http://localhost:3002/api/subasta`,{
+                headers:{
+                    "x-access-token":localStorage.getItem('token')
+                }
+            })
+            let data=await response.json()
+           
+            setSubasta(data.result)
+        },5000)
+       
     }
     const nuevosMensajes=()=>{
         let nuevoMensaje=[]
